@@ -7,7 +7,7 @@ module.exports = {
 
   "webdriver": {
     "start_process": true,
-    "server_path": "./node_modules/.bin/geckodriver",
+    "server_path": "./bin/geckodriver.exe",
     "cli_args": [
       "--log", "debug"
     ],
@@ -29,6 +29,10 @@ module.exports = {
     "jwt": {
       "globals": {
         "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.5mhBHqs5_DTLdINd9p5m7ZJ6XD0Xc55kIaCRY5r6HRA"
+        // "tokenModeratorNoBoardName": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJyb2xlcyI6WyJtb2RlcmF0b3IiXX0.PqYHmV0loeKwyLLYZ1a1eIXBCCaa3t5lYUTu_P_-i14",
+        // "tokenModeratorWithBoardName": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJyb2xlcyI6WyJtb2RlcmF0b3I6dGVzdGJvYXJkIl19.UVf6awGEChVxcWBbt6dYoNH0Scq7cVD_xfQn-U8A1lw",
+        // "tokenEditorWithBoardName": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJyb2xlcyI6WyJlZGl0bzp0ZXN0Ym9hcmQiXX0.-P6gjYlPP5I2zgSoVTlADdesVPfSXV-JXZQK5uh3Xwo",
+        // "tokenEditorNoBoardName": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJyb2xlcyI6WyJlZGl0b3IiXX0.IJehwM8tPVQFzJ2fZMBHveii1DRChVtzo7PEnSmmFt8"
       }
     }
   }
