@@ -36,3 +36,28 @@ test("roleInBoard allows board-scoped reader access without editor privileges", 
     );
   });
 });
+
+test("nameInToken returns a safe name only from a verified JWT", async () => {
+  const { nameInToken } = require(JWT_BOARDNAME_AUTH_PATH);
+  const config = createConfig({ AUTH_SECRET_KEY: "test" });
+
+  assert.equal(
+    nameInToken(
+      config,
+      jsonwebtoken.sign({ name: "  Ada Lovelace  " }, "test"),
+    ),
+    "Ada Lovelace",
+  );
+  assert.equal(
+    nameInToken(config, jsonwebtoken.sign({ name: "Mallory" }, "wrong")),
+    null,
+  );
+  assert.equal(
+    nameInToken(config, jsonwebtoken.sign({ name: "Ada\nLovelace" }, "test")),
+    null,
+  );
+  assert.equal(
+    nameInToken(config, jsonwebtoken.sign({ name: "a".repeat(129) }, "test")),
+    null,
+  );
+});

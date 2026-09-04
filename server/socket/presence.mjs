@@ -7,6 +7,7 @@ import {
 import { getToolId } from "../../client-data/js/message_tool_metadata.js";
 import { SocketEvents } from "../../client-data/js/socket_events.js";
 import { Cursor } from "../../client-data/tools/index.js";
+import { nameInToken } from "../auth/board_jwt.mjs";
 import { buildPronounceableName } from "../shared/pronounceable_name.mjs";
 import {
   getSocketHeaderValue,
@@ -42,6 +43,19 @@ function buildUserName(ip, userSecret) {
 }
 
 /**
+ * Uses only a cryptographically verified JWT claim for a custom visible name.
+ *
+ * @param {AppSocket} socket
+ * @param {ServerConfig} config
+ * @param {string} fallbackName
+ * @returns {string}
+ */
+function resolveVisibleUserName(socket, config, fallbackName) {
+  const token = getSocketQueryValue(socket, "token");
+  return nameInToken(config, token) || fallbackName;
+}
+
+/**
  * @param {AppSocket} socket
  * @param {string} boardName
  * @param {ServerConfig} config
@@ -70,7 +84,7 @@ function buildBoardUserRecord(
     socketId: socket.id,
     userId: buildUserId(userSecret),
     userSecret,
-    name: buildUserName(ip, userSecret),
+    name: resolveVisibleUserName(socket, config, buildUserName(ip, userSecret)),
     ip,
     userAgent: getSocketHeaderValue(socket, "user-agent"),
     language: getSocketHeaderValue(socket, "accept-language"),

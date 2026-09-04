@@ -227,6 +227,12 @@ WBO uses Socket.IO. Clients connect with query fields such as `board`,
 `boardstate`, then emits a `broadcast` replay batch from the requested
 `baselineSeq`.
 
+When JWT authentication is enabled, a valid token may include the standard
+string `name` claim. A non-empty name of at most 128 characters, without control
+or formatting characters, replaces the generated visible name in cursor and
+participant presence; absent or invalid optional names retain the generated
+name.
+
 Live board writes are JSON messages sent on the `broadcast` event. They use
 numeric `tool` codes from [client-data/tools/manifest.js](./client-data/tools/manifest.js)
 and numeric mutation `type` codes from [client-data/js/mutation_type.js](./client-data/js/mutation_type.js):
