@@ -82,12 +82,48 @@ function normalizeGrantedRole(roleName) {
  * @returns {unknown}
  */
 function verifyTokenRoles(token, secret) {
+  const payload = verifyTokenPayload(token, secret);
+  return payload === null ? null : payload.roles;
+}
+
+/**
+ * @param {string} token
+ * @param {string} secret
+ * @returns {{[key: string]: unknown} | null}
+ */
+function verifyTokenPayload(token, secret) {
   if (!token) return null;
   try {
-    return jsonwebtoken.verify(token, secret).roles;
+    const payload = jsonwebtoken.verify(token, secret);
+    return typeof payload === "object" && payload !== null ? payload : null;
   } catch {
     return null;
   }
+}
+
+/**
+ * Returns a safe display name from the standard JWT `name` claim. Invalid,
+ * empty, or excessively long optional claims are ignored without weakening
+ * the token's separate authorization checks.
+ *
+ * @param {JwtAuthConfig} config
+ * @param {string} token
+ * @returns {string | null}
+ */
+export function nameInToken(config, token) {
+  if (config.AUTH_SECRET_KEY === "") return null;
+  const payload = verifyTokenPayload(token, config.AUTH_SECRET_KEY);
+  const name = payload?.name;
+  if (typeof name !== "string") return null;
+  const normalizedName = name.trim();
+  if (
+    normalizedName.length === 0 ||
+    normalizedName.length > 128 ||
+    /[\p{Cc}\p{Cf}]/u.test(normalizedName)
+  ) {
+    return null;
+  }
+  return normalizedName;
 }
 
 /**

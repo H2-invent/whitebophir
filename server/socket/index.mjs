@@ -35,6 +35,7 @@ import {
   emitUserJoinedToBoard,
   emitUserUpdatedToBoard,
   ensureBoardUser,
+  getBoardUser,
   getBoardUserMap,
   removeBoardUser,
   resetBoardUserMaps,
@@ -355,6 +356,10 @@ function rejectSocketRequest(socket, eventName, reason, extras) {
  * @returns {string}
  */
 function getSocketUserName(socket, clientIp) {
+  if (typeof socket.boardName === "string") {
+    const user = getBoardUser(socket.boardName, socket.id);
+    if (user) return user.name;
+  }
   return buildUserName(clientIp, getSocketUserSecret(socket));
 }
 

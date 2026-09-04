@@ -214,6 +214,29 @@ test("board user record seeds tool color and size from socket query", async () =
   );
 });
 
+test("board user record uses the verified JWT name in presence", async () => {
+  await createSocketScenario(
+    { historyDirPrefix: false },
+    async ({ sockets }) => {
+      const config = createConfig({ AUTH_SECRET_KEY: "test-secret" });
+      const token = jsonwebtoken.sign(
+        { name: "Ada Lovelace", roles: ["editor:board-a"] },
+        config.AUTH_SECRET_KEY,
+      );
+      const { socket } = createSocket({ query: { token } });
+
+      const record = sockets.__test.buildBoardUserRecord(
+        socket,
+        "board-a",
+        config,
+        456,
+      );
+
+      assert.equal(record.name, "Ada Lovelace");
+    },
+  );
+});
+
 test("board user maps are created lazily and cleaned when emptied", async () => {
   await createSocketScenario({ historyDirPrefix: false }, async ({ test }) => {
     const users = test.getBoardUserMap("board-a");
