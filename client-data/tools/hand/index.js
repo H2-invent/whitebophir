@@ -32,6 +32,7 @@ import { createBoardHtmlOverlay } from "../../js/board_html_overlay.js";
 import { messages as BoardMessages } from "../../js/board_transport.js";
 import { safePreventDefault } from "../../js/board_viewport.js";
 import { logFrontendEvent } from "../../js/frontend_logging.js";
+import { pointInTransformedBBox } from "../../js/intersect.js";
 import MessageCommon from "../../js/message_common.js";
 import { MutationType } from "../../js/message_tool_metadata.js";
 import { TOOL_CODE_BY_ID } from "../tool-order.js";
@@ -61,12 +62,6 @@ import { TOOL_CODE_BY_ID } from "../tool-order.js";
 /** @typedef {(x: number, y: number, force: boolean) => void} HandTransformHandler */
 /** @typedef {(e: { key: string, target: EventTarget | null }) => void} HandShortcutHandler */
 /** @typedef {{ name: string, icon: string, active: boolean, switch?: () => void }} HandSecondary */
-/** @typedef {import("../../js/intersect.js").Point2D} Point2D */
-/** @typedef {import("../../js/intersect.js").TransformedBBox} TransformedBBox */
-
-/** @type {(point: Point2D, box: TransformedBBox) => boolean} */
-let pointInTransformedBBox = () => false;
-
 const INTERSECTION_SELECTION_TIMEOUT_MS = 120;
 
 export const toolId = "hand";
@@ -1415,8 +1410,7 @@ function switchTool(state) {
 }
 
 /** @param {ToolBootContext} ctx */
-export async function boot(ctx) {
-  ({ pointInTransformedBBox } = await import("../../js/intersect.js"));
+export function boot(ctx) {
   return createState(ctx.runtime, ctx.assetUrl);
 }
 
